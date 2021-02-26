@@ -1,0 +1,173 @@
+﻿@model WebArchive.Models.Project
+
+    <table border="1" width="340px" style="margin-top:50px">
+
+        <tbody>
+            <tr style="text-align:center; color:black; background-color:#CCDFF2; border-bottom:1px solid #aaa;">
+                <td colspan="2" style="padding:0;">
+                    <table cellpadding="4" cellspacing="0" style="width:100% !important; display:table; margin:0px; background-color:transparent;">
+
+
+                        <tbody>
+                            <tr>
+                                <td style="font-size:120%; vertical-align:middle;">
+                                    <span style="font-weight:bold;">@Model.Name</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                @if (Model.Category != null)
+                {
+                    <td colspan="2" style="background-color:#D7E5F2; text-align:center; border-bottom:1px solid #aaa;">
+                        @Model.Category
+                    </td>
+                }
+                else
+                {
+                    <td colspan="2" style="background-color:#D7E5F2; text-align:center; border-bottom:1px solid #aaa;">
+                        Intel
+                    </td>
+                }
+            </tr>
+            @if (Model.Logo != null)
+            {
+                <tr>
+                    <td colspan="2" style="text-align:center; font-size:95%; background-color:white; border-top:1px solid #eee; border:1px solid #aaa;">
+                        <img alt="Logo" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Logo)" decoding="async" style="max-width:320px; max-height:50px; width:auto; height:auto" />
+                    </td>
+                </tr>
+            }
+            @if (Model.ImageUI != null)
+            {
+                <tr>
+                    <td colspan="2" style="text-align:center; font-size:95%; background-color:white; border-top:1px solid #eee; border:1px solid #aaa;">
+                        <img alt="UI" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.ImageUI)" decoding="async" style="max-width:320px; max-height:320px; width:auto; height:auto" />
+                    </td>
+                </tr>
+            }
+            @if (Model.Version != null)
+            {
+                <tr>
+                    <td style="background: #eeeeee; vertical-align: top;">
+                        Latest&nbsp;release
+                    </td>
+                    <td style="background: #ffffff">
+                        @Model.Version
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td style="background: #eeeeee; vertical-align: top;">
+                    Status
+                </td>
+                @{
+                    if (Model.Status == Status.Online)
+                    {
+                        <td style="color:green; background: #ffffff">Online</td>
+                    }
+                    else if (Model.Status == Status.Offline)
+                    {
+                        <td style="color:red; background: #ffffff">Offline</td>
+                    }
+                    else
+                    {
+                        <td style="color:darkred; background: #ffffff">Offline (connection refused)</td>
+                    }
+                }
+            </tr>
+            @if (Model.WebAdress != null)
+            {
+                <tr>
+                    <td style="background: #eeeeee; vertical-align: top;">
+                        Website
+                    </td>
+                    <td style="background: #ffffff">
+                        <a href="@Model.WebAdress" title="WebAdress">[Link]</a>
+                    </td>
+                </tr>
+            }
+            @if (Model.Repository != null)
+            {
+                <tr>
+                    <td style="background: #eeeeee; vertical-align: top;">
+                        Repository
+                    </td>
+                    <td style="background: #ffffff">
+                        <a href="@Model.Repository" title="Repository">[Link]</a>
+                    </td>
+                </tr>
+            }
+            @if (Model.WrittenIn != null)
+            {
+                <tr>
+                    <td style="background: #eeeeee; vertical-align: middle;">
+                        Written in
+                    </td>
+                    <td style="background: #ffffff">
+                        @Model.WrittenIn
+                    </td>
+                </tr>
+            }
+            @if (Model.Userland != null)
+            {
+                <tr>
+                    <td style="background: #eeeeee; vertical-align: middle;">
+                        Userland
+                    </td>
+                    <td style="background: #ffffff">
+                        @Model.Userland
+                    </td>
+                </tr>
+            }
+            @if (Model.Owner != null)
+            {
+                <tr>
+                    <td style="background: #eeeeee; vertical-align: middle;">
+                        Owner
+                    </td>
+                    <td style="background: #ffffff">
+                        @Model.Owner
+                    </td>
+                </tr>
+            }
+            @if (Model.Authors != null)
+            {
+                <tr>
+                    <td style="        background: #eeeeee;
+        vertical-align: middle;">
+                        Developers
+                    </td>
+                    <td style="        background: #ffffff
+">
+                        @Model.Authors
+                    </td>
+                </tr>
+            }
+            @if (User.Identity.Name == Model.PostCreator ||
+              ((WebArchive.Filters.AdminConfig)ViewBag.AdminConfig).AdminList.Any(s => s == User.Identity.Name))
+            {
+                <tr>
+                    <td colspan="2" style="background-color:#CCDFF2; border-top:1px solid #aaa; text-align:center;">
+                        <a rel="nofollow" class="external text" href="/Project/Edit/@Model.Keygen">[Edit]</a> |
+                        <a rel="nofollow" class="external text" href="/Project/Delete/@Model.Keygen">[Delete]</a> |
+                        <a rel="nofollow" class="external text" href="/Project/Log/@Model.Keygen">[Changelog]</a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2" style="background-color:#CCDFF2; border-top:1px solid #aaa; text-align:center;">
+                        <a rel="nofollow" class="external text" href="/Project/Log/@Model.Keygen">[Changelog]</a>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+
+

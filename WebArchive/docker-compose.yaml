@@ -1,0 +1,42 @@
+﻿version: "2.2"
+services:
+    web:
+        build: .
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - db
+            - backup
+        environment:
+            - SA_PASSWORD=${DB_PASSWORD}
+            - WEBSITE_DNS
+        restart: always
+        volumes:
+            - ./web_logs:/app/wwwroot/assets/logs         
+            - ./web_logs/projects:/app/wwwroot/assets/logs/projects             
+    db:
+        image: "mcr.microsoft.com/mssql/server:2019-CU8-ubuntu-16.04"
+        user: root
+        environment:
+            - SA_PASSWORD=${DB_PASSWORD}
+            - ACCEPT_EULA=Y
+        restart: always
+        volumes:
+            - ./db_data:/var/opt/mssql
+            - ./db_backup:/backup
+    backup:
+        image: bbtsoftwareag/mssql-backup:0.2.0
+        environment:
+          - TZ
+          - DB_SERVER
+          - DB_USER
+          - DB_PASSWORD
+          - DB_NAMES
+          - CRON_SCHEDULE
+          - BACKUP_CLEANUP
+          - BACKUP_AGE
+          - SKIP_BACKUP_LOG
+        restart: always
+        volumes:
+            - ./db_backup:/backup       

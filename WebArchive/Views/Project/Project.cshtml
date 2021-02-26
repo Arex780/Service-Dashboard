@@ -1,0 +1,63 @@
+﻿@model WebArchive.Models.Project
+@addTagHelper *, WebArchive
+
+    <head>
+        <link rel="stylesheet" href="~/css/site.css" />
+        
+    </head>
+
+<div class="container-width100">
+    <main role="main" class="pb-3 w-100">
+<div style="margin-left:240px; margin-right:50px">
+
+
+@{ 
+    IEnumerable<WebArchive.Models.Project> Enum = ViewData["Enum"] as IEnumerable<WebArchive.Models.Project>;
+}
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+    <div class="sidenav">
+        @foreach (var app in Enum)
+        {
+                @Html.ActionLink(app.Name, "Project", "Project",
+               new {key = app.Keygen })
+        }
+    </div>
+
+
+
+    <div style="float:right">
+
+        @await Component.InvokeAsync("InfoBox", Model.Keygen)
+
+    </div>
+
+    <div class="blog-post">
+
+        <h1 class="display-4">@Model.Name</h1>
+        <div class="details text-info">
+            <span>Posted by @Model.PostCreator on @Model.PostTime.ToString("d"), Edited: @Model.EditTime</span>
+        </div>
+        <p></p>
+        <div class="content">
+            <b>@Model.Name</b> - @Model.ShortDesc
+        </div>
+
+        <p></p>
+        <hr />
+
+        <div class="content">
+            <span style="white-space: pre-line">@Html.Raw(@Model.Description)</span>
+        </div>
+
+
+    </div>
+
+
+
+    </div>
+    </main>
+</div>

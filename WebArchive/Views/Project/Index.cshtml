@@ -1,0 +1,243 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model IEnumerable<WebArchive.Models.Project>
+
+<div class="container-width100">
+    <main role="main" class="pb-3 w-100">
+        <div id="margin_settings" style="margin-left:240px; margin-right:95px">
+            <div class="text-center">
+                <h1 class="display-4" style="padding-top: 12px">Service&nbsp;Dashboard</h1>
+
+                <div class="sidenav text-left text-light" id="side_bar" style="width: 190px; background: #555">
+                    <div style="padding: 0px 16px 0px 16px; font-size: 14px">
+                        <button height="25px" style="float: right; padding-top: 3px" class="show-main-menu" title="Show filters" id="show-main-menu" aria-label="show filters" type="button" onmouseover="focusColor('svg')" onmouseout="normalColor('svg')" onclick="toggleSideBar()">
+                            <svg height="25px" id="svg" style="fill:#fff" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220.682 220.682">
+                                <g>
+                                    <polygon points="99.702,210.043 127.986,181.758 56.569,110.341 127.986,38.924 99.702,10.639 0,110.341"></polygon>
+                                    <polygon points="192.398,10.639 92.695,110.341 192.398,210.043 220.682,181.758 149.264,110.341 220.682,38.924"></polygon>
+                                </g>
+                            </svg>
+                        </button>
+                        <div id="side_bar_elements" style="display: block">
+                            <b>FILTERS</b>
+                            @using (Html.BeginForm("Index", "Project", FormMethod.Get))
+                            {
+                                @Html.Hidden("sort", ViewData["SelectedSort"])
+                                <hr style="width: 158px">
+                                <p style="display: inline">Category:</p>
+                                @Html.DropDownList("cat", new SelectList((System.Collections.IEnumerable)ViewData["CategoryList"], ViewData["CategoryFilter"]), "-- All --", new { style = "width: 158px", id = "CatList", onchange = "form.submit();", @class = "custom-select" })
+                                <hr style="width: 158px">
+                                <p style="display: inline">Status:</p>
+                                @Html.DropDownList("stat", new SelectList((System.Collections.IEnumerable)ViewData["StatusList"], ViewData["StatusFilter"]), "-- All --", new { style = "width: 158px", id = "StatList", onchange = "form.submit();", @class = "custom-select" })
+                                <hr style="width: 158px">
+                            }
+                        </div>
+                    </div>
+                    <a asp-action="Index" asp-route-sort="@ViewData["SelectedSort"]" id="side_bar_clear" style="display: inline; font-size: 10px">Clear all filters</a>
+                </div>
+
+                <table class="table table-bordered table-hover" width="100%">
+                    <tr>
+                        <th style="vertical-align:middle">
+                            <a asp-action="Index" asp-route-sort="@ViewData["NameSortParm"]" asp-route-cat="@ViewData["CategoryFilter"]" asp-route-stat="@ViewData["StatusFilter"]">
+                                @Html.DisplayNameFor(model => model.Name)
+                            </a>
+                            @{ if ((string)ViewData["SelectedSort"] == null)
+                                {<p style="display: inline"> ⯅</p>}
+                                else if ((string)ViewData["SelectedSort"] == "name_desc")
+                                {<p style="display: inline"> ⯆</p>}
+                            }
+                        </th>
+                        <th style="vertical-align:middle">
+                            <a asp-action="Index" asp-route-sort="@ViewData["StatusSortParm"]" asp-route-cat="@ViewData["CategoryFilter"]" asp-route-stat="@ViewData["StatusFilter"]">
+                                @Html.DisplayNameFor(model => model.Status)
+                            </a>
+                            @{ if ((string)ViewData["SelectedSort"] == "status")
+                                {<p style="display: inline"> ⯅</p>}
+                                else if ((string)ViewData["SelectedSort"] == "status_desc")
+                                {<p style="display: inline"> ⯆</p>}
+                            }
+                        </th>
+                        <th style="vertical-align:middle">Website</th>
+                        <th style="vertical-align:middle">Repository</th>
+
+                        <th style="vertical-align:middle">
+                            <a asp-action="Index" asp-route-sort="@ViewData["CategorySortParm"]" asp-route-cat="@ViewData["CategoryFilter"]" asp-route-stat="@ViewData["StatusFilter"]">
+                                @Html.DisplayNameFor(model => model.Category)
+                            </a>
+                            @{ if ((string)ViewData["SelectedSort"] == "category")
+                                {<p style="display: inline"> ⯅</p>}
+                                else if ((string)ViewData["SelectedSort"] == "category_desc")
+                                {<p style="display: inline"> ⯆</p>}
+                            }
+                        </th>
+                        <th style="vertical-align:middle">Description</th>
+
+                    </tr>
+                    @foreach (var app in Model)
+                    {
+                        <tr>
+                            <td style="vertical-align:middle"><a class="page-scroll" href="/Project/@app.Keygen">@app.Name</a></td>
+                            @{
+                                if (app.Status == Status.Online)
+                                {
+                                    <td style="color:green; vertical-align:middle">Online</td>
+                                }
+                                else if (app.Status == Status.Offline)
+                                {
+                                    <td style="color:red; vertical-align:middle">Offline</td>
+                                }
+                                else
+                                {
+                                    <td style="color:darkred; vertical-align:middle">Refused</td>
+                                }
+                            }
+                            @if (app.WebAdress != null)
+                            {
+                                <td style="vertical-align:middle"><a class="page-scroll" href="@app.WebAdress">[Link]</a></td>
+                            }
+                            else
+                            {
+                                <td style="vertical-align:middle"><a class="page-scroll" href="@app.WebAdress"></a></td>
+                            }
+                            @if (app.Repository != null)
+                            {
+                                <td style="vertical-align:middle"><a class="page-scroll" href="@app.Repository">[Link]</a></td>
+                            }
+                            else
+                            {
+                                <td style="vertical-align:middle"><a class="page-scroll" href="@app.Repository"></a></td>
+                            }
+                            <td style="vertical-align:middle">@app.Category</td>
+                            <td style="vertical-align:middle">@app.ShortDesc</td>
+
+                        </tr>
+
+                    }
+                </table>
+
+
+            </div>
+        </div>
+        <script>
+        var x, i, j, l, ll, selElmnt, a, b, c;
+/* Look for any elements with the class "custom-select": */
+        x = document.getElementsByClassName("custom-select");
+        l = x.length;
+        for (i = 0; i < l; i++) {
+            selElmnt = x[i].getElementsByTagName("select")[0];
+            ll = selElmnt.length;
+            /* For each element, create a new DIV that will act as the selected item: */
+            a = document.createElement("DIV");
+            a.setAttribute("class", "select-selected");
+            a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+            x[i].appendChild(a);
+            /* For each element, create a new DIV that will contain the option list: */
+            b = document.createElement("DIV");
+            b.setAttribute("class", "select-items select-hide");
+            for (j = 1; j < ll; j++) {
+                /* For each option in the original select element,
+                create a new DIV that will act as an option item: */
+                c = document.createElement("DIV");
+                c.innerHTML = selElmnt.options[j].innerHTML;
+                c.addEventListener("click",
+                    function(e) {
+                        /* When an item is clicked, update the original select box,
+                        and the selected item: */
+                        var y, i, k, s, h, sl, yl;
+                        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                        sl = s.length;
+                        h = this.parentNode.previousSibling;
+                        for (i = 0; i < sl; i++) {
+                            if (s.options[i].innerHTML == this.innerHTML) {
+                                s.selectedIndex = i;
+                                h.innerHTML = this.innerHTML;
+                                y = this.parentNode.getElementsByClassName("same-as-selected");
+                                yl = y.length;
+                                for (k = 0; k < yl; k++) {
+                                    y[k].removeAttribute("class");
+                                }
+                                this.setAttribute("class", "same-as-selected");
+                                break;
+                            }
+                        }
+                        h.click();
+                    });
+                b.appendChild(c);
+            }
+            x[i].appendChild(b);
+            a.addEventListener("click",
+                function(e) {
+                    /* When the select box is clicked, close any other select boxes,
+                    and open/close the current select box: */
+                    e.stopPropagation();
+                    closeAllSelect(this);
+                    this.nextSibling.classList.toggle("select-hide");
+                    this.classList.toggle("select-arrow-active");
+                });
+        }
+
+        function closeAllSelect(elmnt) {
+            /* A function that will close all select boxes in the document,
+            except the current select box: */
+            var x, y, i, xl, yl, arrNo = [];
+            x = document.getElementsByClassName("select-items");
+            y = document.getElementsByClassName("select-selected");
+            xl = x.length;
+            yl = y.length;
+            for (i = 0; i < yl; i++) {
+                if (elmnt == y[i]) {
+                    arrNo.push(i)
+                } else {
+                    y[i].classList.remove("select-arrow-active");
+                }
+            }
+            for (i = 0; i < xl; i++) {
+                if (arrNo.indexOf(i)) {
+                    x[i].classList.add("select-hide");
+                }
+            }
+        }
+
+/* If the user clicks anywhere outside the select box,
+then close all select boxes: */
+        document.addEventListener("click", closeAllSelect);
+
+        function focusColor(id) {
+            document.getElementById(id).style.fill = 'lightblue';
+        }
+
+        function normalColor(id) {
+            document.getElementById(id).style.fill = 'white';
+        }
+
+        function toggleSideBar() {
+            var sidebar = document.getElementById('side_bar');
+            var elements = document.getElementById('side_bar_elements');
+            var clearfilters = document.getElementById('side_bar_clear');
+            var btn = document.getElementById('svg');
+            var margin = document.getElementById('margin_settings');
+            if (sidebar.style.width == "190px") {
+                sidebar.style.width = "45px";
+                elements.style.display = "none";
+                clearfilters.style.display = "none";
+                btn.setAttribute("transform", "rotate(180)");
+                margin.style.marginLeft = "95px";
+                btn.style.position = "absolute";
+                btn.style.left = "10px";
+            }
+            else {
+                sidebar.style.width = "190px";
+                elements.style.display = "block";
+                clearfilters.style.display = "inline";
+                btn.setAttribute("transform", "rotate(0)");
+                margin.style.marginLeft = "240px";
+                btn.style.position = "relative";
+                btn.style.left = "0px";
+            }
+        }
+
+        </script>
+    </main>
+</div>

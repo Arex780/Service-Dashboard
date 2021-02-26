@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewData["Title"] = "My account";
+    IEnumerable<System.Security.Claims.Claim> roles = User.FindAll(System.Security.Claims.ClaimTypes.Role);
+    bool isAdmin = ((WebArchive.Filters.AdminConfig)ViewBag.AdminConfig).AdminList.Any(s => s == User.Identity.Name);
+    string emailLogsPath = System.IO.Directory.GetCurrentDirectory() + "/wwwroot/assets/logs/logEmail.txt";
+    string emailLogs = System.IO.File.Exists(emailLogsPath) ? System.IO.File.ReadAllText(emailLogsPath) : "";
+}
+
+    <div class="container-width100">
+        <main role="main" class="pb-3 w-100">
+            @if (!string.IsNullOrEmpty(User.FindFirst(System.Security.Claims.ClaimTypes.Thumbprint).Value))
+            {
+                <div style="padding-top:20px">
+                    <img src="data:image/jpeg;base64,@User.FindFirst(System.Security.Claims.ClaimTypes.Thumbprint).Value" decoding="async" height="40" alt="Thumbnail" style="border-radius: 50%;" />
+                    <b style="display:inline-block; vertical-align: middle;">@User.FindFirst(System.Security.Claims.ClaimTypes.WindowsAccountName).Value</b>
+                </div>
+            }
+            else
+            {
+                <div style="padding-top:20px" data-initials="@User.FindFirst(System.Security.Claims.ClaimTypes.WindowsUserClaim).Value">
+                    <b style="display:inline-block; vertical-align: middle">Generic Account</b>
+                </div>
+            }
+            <hr />
+            <h4 style="padding-bottom: 0.5rem">Details</h4>
+            <div style="margin-left: 50px; margin-right: 50px">
+                <p style="padding: 0px; margin-bottom: 0.5rem; color:#6b778c">Domain: <text style="color: black">@User.FindFirst(System.Security.Claims.ClaimTypes.Dns).Value</text></p>
+                <p style="padding: 0px; margin-bottom: 0.5rem; color:#6b778c">Username: <text style="color: black">@User.Identity.Name</text></p>
+                @if (User.FindFirst(System.Security.Claims.ClaimTypes.AuthorizationDecision).Value == "BB")
+                {
+                    <p style="padding: 0px; margin-bottom: 0.5rem; color:#6b778c">WWID: <text style="color: blue">@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value</text></p>
+                }
+                else
+                {
+                    <p style="padding: 0px; margin-bottom: 0.5rem; color:#6b778c">WWID: <text style="color: green">@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value</text></p>
+                }
+                <p style="padding: 0px; margin-bottom: 0.5rem; color:#6b778c">Firstname: <text style="color: black">@User.FindFirst(System.Security.Claims.ClaimTypes.GivenName).Value</text></p>
+                <p style="padding: 0px; margin-bottom: 0.5rem; color:#6b778c">Lastname: <text style="color: black">@User.FindFirst(System.Security.Claims.ClaimTypes.Surname).Value</text></p>
+                <p style="padding: 0px; margin-bottom: 0.5rem; color:#6b778c">Email: <a href="mailto:@User.FindFirst(System.Security.Claims.ClaimTypes.Email).Value">@User.FindFirst(System.Security.Claims.ClaimTypes.Email).Value</a></p>
+            </div>
+            <br />
+            <h4 style="padding-bottom: 0.5rem">Statistics</h4>
+            <div style="margin-left: 50px; margin-right: 50px">
+                <p style="padding: 0px; margin-bottom: 0.5rem; color:#6b778c">Emails sent: <text style="color: black">@System.Text.RegularExpressions.Regex.Matches(emailLogs, "Email has been sent successfully about project").Count</text></p>
+            </div>
+            <br />
+            <h4 style="padding-bottom: 0.5rem">Permissions</h4>
+            <div style="margin-left: 50px; margin-right: 50px">
+                <p style="padding: 0px; margin-bottom: 0.5rem; color:#6b778c">Administrator: <text style="color: black">@isAdmin</text></p>
+            </div>
+            <br />
+            <h4 style="padding-bottom: 0.5rem">Groups</h4>
+            <div style="margin-left: 50px; margin-right: 50px">
+                <div style="height:200px;width:400px;border:1px solid #ccc;overflow:auto;">
+                    <ul style="padding: 0px; list-style-type:none">
+                        @foreach (var item in roles)
+                        {
+                            <li>@item.Value</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </main>
+</div>

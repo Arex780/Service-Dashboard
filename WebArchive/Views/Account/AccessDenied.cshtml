@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>403 - Access Denied</title>
+    <link rel="icon" href="~/assets/icons/website-32px.png" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body style="overflow-y:hidden; background:#f4f5f7;">
+    <style>
+        .sign-in-box {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    </style>
+
+    <div class="row sign-in-box">
+        <div class="hidden-xs-down col"></div>
+        <div class="col">
+            <div class="card" style="margin: 20px 0; min-width:350px;">
+                <div class="card-body text-center" style="padding: 20px 0px;">
+                    <img src="~/assets/icons/lock-black-48dp.svg" height="50" alt="Lock" />
+                    <h3>Access Denied</h3>
+                </div>
+                <div class="card-body" style="padding-top: 0px;">
+                    <h4 class="card-title"></h4>
+                    <span class="card-text">You don't have permissions to access page "<i>@ViewContext.HttpContext.Request.Query["u"]</i>". Contact an administrator to get permissions or browse other pages.</span>
+                    <hr />
+                    <div class="text-center"><a class="btn btn-primary" href="/">Home Page</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="hidden-xs-down col"></div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+

@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Service Dashboard</title>
+    <link rel="icon" href="~/assets/icons/website-32px.png" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+</head>
+<body>
+    <header>
+        <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary box-shadow mb-3">
+            <div class="container w-100">
+                <a class="navbar-brand" asp-area="" asp-controller="Project" asp-action="Index"><img src="~/assets/images/logointel.png" height="40" alt="Intel" style="position: absolute; top: 8px; left: 16px" /></a>
+                <div style="margin-left: 80px"></div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <b><a class="nav-link text-light" asp-area="" asp-controller="Project" asp-action="Index">All&nbsp;projects</a></b>
+                        </li>
+                        <li class="nav-item">
+                            <b><a class="nav-link text-light" asp-area="" asp-controller="Project" asp-action="Add">Add&nbsp;new&nbsp;project</a></b>
+                        </li>
+                        <li class="nav-item">
+                            <b><a class="nav-link text-light" asp-area="" asp-controller="Project" asp-action="Logs">Logs</a></b>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <div class="navbar-nav ml-auto dropdown-popup-handler" style="position:absolute; right: 0px;">
+                    <button class="nav nav-item navbar-right dropdown-popup" onclick="dropdownToggle('user-popup')" style="padding: 8px;">
+                        <text class="nav-link text-light">@(User.FindFirst(System.Security.Claims.ClaimTypes.Dns).Value)\@User.Identity.Name</text>
+                        @if (!string.IsNullOrEmpty(User.FindFirst(System.Security.Claims.ClaimTypes.Thumbprint).Value))
+                        {
+                            <img src="data:image/jpeg;base64,@User.FindFirst(System.Security.Claims.ClaimTypes.Thumbprint).Value" decoding="async" height="40" alt="Thumbnail" style="border-radius: 50%; margin-left:0.25em; margin-right:0.25em" />
+                        }
+                        else
+                        {
+                            <div data-initials="@User.FindFirst(System.Security.Claims.ClaimTypes.WindowsUserClaim).Value"></div>
+                        }
+                    </button>
+                    <div id="user-popup" class="dropdown-popup-content" style="top: 56px">
+                        <a asp-area="" asp-controller="Account" asp-action="Index"><img class="icon-white" src="~/assets/icons/account_circle-24px.svg" />My account</a>
+                        <a asp-area="" asp-controller="Account" asp-action="Logout"><img class="icon-white" src="~/assets/icons/login-24px.svg" />Sign out</a>
+                    </div>
+                </div>
+                </div>
+        </nav>
+    </header>
+
+
+
+    <div style="margin-top:55px">
+        @RenderBody()
+    </div>
+
+    <footer class="border-top footer text-muted text-center" style="visibility:visible" >
+        <div class="container">
+            &copy; Intel Corporation | IOG Tools, Operation & Lab Services | Service Dashboard 
+        </div>
+    </footer>
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

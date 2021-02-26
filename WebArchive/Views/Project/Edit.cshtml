@@ -1,0 +1,246 @@
+﻿@model WebArchive.Models.Project
+@addTagHelper "*, Microsoft.AspNetCopre.Mvc.TagHelpers"
+@{
+    ViewData["Title"] = "Edit project";
+}
+
+
+<div class="container">
+    <main role="main" class="pb-3 w-100">
+
+        <div class="text-left" style="margin-left:10px">
+            <h1 class="display-4">Edit project "@Model.Name"</h1>
+        </div>
+
+
+        <fieldset>
+
+            <form asp-action="Edit" asp-controller="Project" asp-route-id="@Model.Id" id="myform" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="input-validation-error"></div>
+                <input type="hidden" asp-for="@Model.PostCreator" />
+                <input type="hidden" asp-for="@Model.PostTime" />
+                <input type="hidden" asp-for="@Model.Keygen" name="previousKeygen" />
+            </form>
+
+            <table width="100%" cellpadding="10">
+                <tr>
+                    <td width="49%">
+                        <label asp-for="Name" form="myform"></label>*
+                        <input asp-for="Name" class="form-control" id="Name" form="myform" placeholder="Project name" />
+                        <span asp-validation-for="Name" style="color: red"></span>
+                        <span style="color: red">@Html.ValidationMessage("Project")</span>
+                    </td>
+                    <td width="2%"></td>
+                    <td width="49%" valign="top">
+                        <label asp-for="Version" form="myform"></label>
+                        <input asp-for="Version" class="form-control" id="Version" form="myform" placeholder="e.g. 0.x.1b" />
+                        <span asp-validation-for="Version" style="color: red"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="49%" valign="top">
+                        <label asp-for="Category" form="myform"></label>
+                        <input asp-for="Category" class="form-control" id="Category" form="myform" placeholder="Project category" />
+                        <span asp-validation-for="Category" style="color: red"></span>
+                    </td>
+                    <td width="2%"></td>
+                    <td width="49%">
+                        <label asp-for="Owner" form="myform"></label>*
+                        <input asp-for="Owner" class="form-control" id="Owner" form="myform" placeholder="e.g. name.name@intel.com" />
+                        <div class="popup float-right" style="position: relative; bottom: -38px">
+                            <span class="popuptext-right" id="OwnerHint">Owner and involved developers will receive email when project's website goes offline</span>
+                        </div>
+                        <span asp-validation-for="Owner" style="color: red"></span>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" cellpadding="10">
+                <tr>
+                    <td width="100%">
+                        <label asp-for="Authors" form="myform"></label>
+                        <input asp-for="Authors" class="form-control" id="Developers" form="myform" placeholder="e.g. name.name@intel.com, name.name@intel.com, etc." />
+                        <div class="popup float-left" style="position: relative; bottom: -26px">
+                            <span class="popuptext-left" id="DevelopersHint">Use comma or semicon to separate email addresses</span>
+                        </div>
+                        <span asp-validation-for="Authors" style="color: red"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%">
+                        <label asp-for="ShortDesc" form="myform"></label>*
+                        <input asp-for="ShortDesc" class="form-control" id="ShortDesc" form="myform" placeholder="Home Page description">
+                        <div class="popup float-left" style="position: relative; bottom: -26px">
+                            <span class="popuptext-left" id="ShortDescHint">Short description is shown in the Home Page's table</span>
+                        </div>
+                        <span asp-validation-for="ShortDesc" style="color: red"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%">
+                        <label asp-for="Description" form="myform"></label>*
+                        <textarea asp-for="Description" class="form-control textAreaMultiline" id="Desc" form="myform" placeholder="<h3>Overview</h3>\n<i>Project Page</i> description"></textarea>
+                        <div class="popup float-left" style="position: relative; bottom: 0px">
+                            <span class="popuptext-left" id="DescHint">Use HTML syntax to format text</span>
+                        </div>
+                        <span asp-validation-for="Description" style="color: red"></span>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" cellpadding="10">
+                <tr>
+                    <td width="49%">
+                        <label asp-for="WebAdress" form="myform"></label>*
+                        <input asp-for="WebAdress" class="form-control" id="Website" form="myform" placeholder="Website address">
+                        <div class="popup float-left" style="position: relative; bottom: -50px">
+                            <span class="popuptext-left" id="WebsiteHint">Service Dashboard will check website status every @(Startup.UpdateInterval/60000) minutes. Link must start with http:// or https://</span>
+                        </div>
+                        <span asp-validation-for="WebAdress" style="color: red"></span>
+                    </td>
+                    <td width="2%"></td>
+                    <td width="49%" valign="top">
+                        <label asp-for="Repository" form="myform"></label>
+                        <input asp-for="Repository" class="form-control" id="Repository" form="myform" placeholder="Repository address">
+                        <div class="popup float-right" style="position: relative; bottom: -14px">
+                            <span class="popuptext-right" id="RepositoryHint">Link must start with http:// or https://</span>
+                        </div>
+                        <span asp-validation-for="Repository" style="color: red"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="49%">
+                        <label asp-for="WrittenIn" form="myform"></label>
+                        <input asp-for="WrittenIn" class="form-control" id="WrittenIn" form="myform" placeholder="e.g. C/C++; Python; etc.">
+                        <div class="popup float-left" style="position: relative; bottom: -26px">
+                            <span class="popuptext-left" id="WrittenInHint">Programming languages used in project</span>
+                        </div>
+                        <span asp-validation-for="WrittenIn" style="color: red"></span>
+                    </td>
+                    <td width="2%"></td>
+                    <td width="49%">
+                        <label asp-for="Userland" form="myform"></label>
+                        <input asp-for="Userland" class="form-control" id="Userland" form="myform" placeholder="e.g. .NET Framework; Docker; etc.">
+                        <div class="popup float-right" style="position: relative; bottom: -38px">
+                            <span class="popuptext-right" id="UserlandHint">Technologies, interfaces or frameworks used in project</span>
+                        </div>
+                        <span asp-validation-for="Userland" style="color: red"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="49%" valign="top">
+                        <div style="position: relative">
+                            <input type="hidden" form="myform" asp-for="@Model.Logo" />
+                            <div id="LogoBox" class="roundbox" style="position: relative; display: inline-flex; z-index: 1; cursor: pointer"></div>
+                            @{
+                                if (Model.Logo != null)
+                                {
+                                    <div class="popup float-left" style="position: relative; top: 60px">
+                                        <span class="popuptext-left" id="LogoBoxHint" style="height: 200px">
+                                            Current image:
+                                            <img alt="Logo" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Logo)" decoding="async" style="max-width: 140px; max-height: 140px; width: auto; height: auto" />
+                                        </span>
+                                    </div>
+                                }
+                            }
+                        <div style="position: absolute; top: 1px; z-index: 2" id="LogoBox">
+                            <label asp-for="Logo" id="LogoBox" form="myform" style="margin-left: 4px"></label>
+                            @{
+                                if (Model.Logo != null)
+                                {
+                                    <div style="position:relative; left: 10px; display:inline">
+                                        @Html.CheckBox("deleteLogo", false, new { style = "position:relative; top:1px", form="myform", 
+                                            id="LogoBox", onchange="ChangeVisibility('Logo')" })<p style="display:inline", id="LogoBox"> Delete</p>
+                                    </div>
+                                }
+                            }
+                            <div id="LogoBox"><input type="file" name="imageLogo" form="myform" id="LogoBox" class="form-control-file" accept=".png,.jpg,.jpeg" style="width: 97%; margin-left: 4px" /></div>
+                            <span style="color: red">@Html.ValidationMessage("Image")</span>
+                        </div>
+                        </div>
+                    </td>
+                    <td width="2%"></td>
+                    <td width="49%" valign="top">
+                        <div style="position: relative">
+                            <input type="hidden" form="myform" asp-for="@Model.ImageUI" />
+                            <div id="OverviewBox" class="roundbox" style="position: relative; display: inline-flex; z-index: 1; cursor: pointer"></div>
+                            @{
+                                if (Model.ImageUI != null)
+                                {
+                                    <div class="popup float-right" style="position: relative; top: 60px">
+                                        <span class="popuptext-right" id="OverviewBoxHint" style="height: 200px">
+                                            Current image:
+                                            <img alt="UI" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.ImageUI)" decoding="async" style="max-width: 140px; max-height: 140px; width: auto; height: auto" />
+                                        </span>
+                                    </div>
+                                }
+                            }
+                        <div style="position: absolute; top: 1px; z-index: 2" id="OverviewBox">
+                            <label asp-for="ImageUI" id="OverviewBox" form="myform" style="margin-left: 4px"></label>
+                            <div class="popup" id="OverviewImg">
+                                [?]
+                                <span class="popuptext-top" id="OverviewImgHint">Overview image should show project's home page, user interface or illustrative informations</span>
+                            </div>
+                            @{
+                                if (Model.ImageUI != null)
+                                {
+                                    <div style="position:relative; left: 10px; display:inline">
+                                         @Html.CheckBox("deleteUI", false, new { style="position:relative; top:1px", form="myform", 
+                                             id="OverviewBox", onclick="ChangeVisibility('UI')" })<p style="display:inline", id="OverviewBox"> Delete</p>
+                                    </div>
+                                }
+                            }
+                            <div id="OverviewBox"><input type="file" name="imageUI" id="OverviewBox" form="myform" class="form-control-file" accept=".png,.jpg,.jpeg" style="width: 97%; margin-left: 4px"/></div>
+                            <span style="color: red">@Html.ValidationMessage("Image")</span>
+                        </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+        </fieldset>
+
+
+
+        <div style="margin-left:10px">
+            <p></p>
+            <p>
+                <button type="submit" form="myform" class="btn btn-info">Edit</button>
+            </p>
+            <a rel="nofollow" class="external text" href="/Project/@Model.Keygen">Back to Project Page</a>
+        </div>
+        <p></p>
+        <script>
+            var previousElement = null;
+            document.addEventListener("click",
+                function(e) {
+                    var targetElement = e.target;
+                    var hintId = targetElement.id.concat("Hint");
+                    var inputElement = document.getElementById(hintId);
+
+                    do {
+                        if (previousElement != inputElement && inputElement != null && previousElement != null) {
+                            previousElement.classList.remove("show");
+                        }
+                        if (inputElement) {
+                            inputElement.classList.add("show");
+                            previousElement = inputElement;
+                            return;
+                        }
+                        targetElement = targetElement.parentNode;
+                    } while (targetElement);
+
+                    if (previousElement != null)
+                        previousElement.classList.remove("show");
+                });
+            function ChangeVisibility(input) {
+                var checkbox = document.getElementsByName('delete' + input)[0];
+                var inputbox = document.getElementsByName('image' + input)[0];
+                console.log(checkbox.name);
+                if (checkbox.checked)
+                    inputbox.style.visibility = "hidden";
+                else
+                    inputbox.style.visibility = "visible";
+            }
+        </script>
+    </main>
+</div>

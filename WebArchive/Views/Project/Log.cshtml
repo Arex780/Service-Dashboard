@@ -1,0 +1,66 @@
+﻿@model WebArchive.Models.Project
+@addTagHelper *, WebArchive
+
+    <head>
+        <link rel="stylesheet" href="~/css/site.css" />
+        
+    </head>
+
+<div class="container-width100">
+    <main role="main" class="pb-3 w-100">
+        <div style="margin-left:240px; margin-right:50px">
+
+
+            @{
+                IEnumerable<WebArchive.Models.Project> Enum = ViewData["Enum"] as IEnumerable<WebArchive.Models.Project>;
+            }
+
+            @{
+                ViewData["Title"] = Model.Name + " (log)";
+            }
+
+            <div class="sidenav">
+                @foreach (var app in Enum)
+                {
+                    @Html.ActionLink(app.Name, "Log", "Project",
+        new { key = app.Keygen })
+                }
+            </div>
+
+
+
+
+            <div class="blog-post">
+
+                <h1 class="display-4">@Model.Name: Revision history</h1>
+                <p><a rel="nofollow" class="external text" href="/Project/@Model.Keygen">[Back to Project Page]</a> | <a href="~/assets/logs/projects/@(Model.Id).txt">[Download text file]</a></p>
+
+
+                
+
+
+                <p id="LoadTxtFile"></p>
+
+            </div>
+            
+
+        </div>
+    </main>
+</div>
+<script>
+
+    var path = '/assets/logs/projects/@(Model.Id).txt'
+    var txtFile = new XMLHttpRequest();
+    var allText = "There is no changes yet";
+    txtFile.onreadystatechange = function () {
+        if (txtFile.readyState === XMLHttpRequest.DONE && txtFile.status == 200) {
+            allText = txtFile.responseText;
+            allText = allText.split("\n").join("<br>");
+        }
+
+        document.getElementById('LoadTxtFile').innerHTML = allText;
+    }
+    txtFile.open("GET", path, true);
+    txtFile.send(null);
+
+</script>

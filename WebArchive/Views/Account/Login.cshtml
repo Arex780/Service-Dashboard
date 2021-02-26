@@ -1,0 +1,101 @@
+﻿@model WebArchive.Models.Ldap.LoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intel - Sign in</title>
+    <link rel="icon" href="~/assets/icons/website-32px.png" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body style="overflow-y:hidden; background:#f4f5f7;">
+    <style>
+        .sign-in-box {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .validation-summary-errors ul {
+            list-style: none;
+            padding-left: 0;
+        }
+    </style>
+
+    <div class="row sign-in-box">
+        <div class="hidden-xs-down col"></div>
+        <div class="col">
+            <div class="card" style="margin: 20px 0; min-width:350px;">
+                <div class="card-body text-center" style="padding: 20px 0px;">
+                    <img src="~/assets/images/logointelblue.png" height="50" alt="Intel" />
+                </div>
+                <div class="card-body" style="padding-top: 0px;">
+                    <h4 class="card-title"></h4>
+                    @{
+                        var errorMessage = this.TempData["ErrorMessage"]?.ToString();
+
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">
+                                <strong>Oops!</strong> @errorMessage
+                            </div>
+                        }
+                    }
+                    <form asp-route-returnurl="@ViewContext.HttpContext.Request.Query["u"]" method="post">
+                        <span class="card-text">Use your Intel account to enter the website</span>
+                        <hr />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-user-o"></i>
+                                    </span>
+                                </span>
+                                <input asp-for="Username" placeholder="Domain\Username" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </span>
+                                <input asp-for="Password" placeholder="Password" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group noselect">
+                            <div class="checkbox">
+                                <label asp-for="RememberMe">
+                                    <input asp-for="RememberMe" />
+                                    @Html.DisplayNameFor(m => m.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="hidden-xs-down col"></div>
+    </div>
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

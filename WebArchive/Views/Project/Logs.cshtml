@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Logs";
+}
+<div class="container">
+    <main role="main" class="pb-3 w-100">
+<div class="text-left" style="right:240px; left: 240px">
+    <h1 class="display-4">Logs</h1>
+</div>
+<p></p>
+
+@{
+    IEnumerable<WebArchive.Models.Project> Enum = ViewData["Enum"] as IEnumerable<WebArchive.Models.Project>;
+    List<string> usedValues = new List<string>();
+    string otherLogsPath = "assets/logs/";
+    string projectLogsPath = "assets/logs/projects/";
+    string[] otherLogs = WebArchive.Utils.FileHandler.GetTextFilesFromDirectory(otherLogsPath);
+    string[] projectLogs = WebArchive.Utils.FileHandler.GetTextFilesFromDirectory(projectLogsPath);
+}
+
+Projects logs:    
+<ul>
+    @foreach (var app in Enum)
+    {
+        if (projectLogs.Contains(Convert.ToString(app.Id)))
+        {
+            <li><b>@app.Name</b> - <a href="/Project/Log/@app.Keygen">@(app.Id).txt</a></li>
+            usedValues.Add(Convert.ToString(app.Id));
+        }
+    }
+    @{IEnumerable<string> diff = projectLogs.Except(usedValues);}
+    @foreach (var item in diff)
+    {
+        <li><i>Deleted project</i> - <a href="@(projectLogsPath + item).txt">@(item).txt</a></li>
+    }
+</ul>
+<p></p>
+Other logs:
+<ul>
+@for (int i = 0; i < otherLogs.Length; i++)
+{
+    <li><a href="@(otherLogsPath + otherLogs[i]).txt">@(otherLogs[i]).txt</a></li>
+}
+</ul>
+
+    </main>
+</div>
+
+
+
+
+

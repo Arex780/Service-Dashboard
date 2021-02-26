@@ -1,0 +1,59 @@
+{
+  "ConnectionStrings": {
+    "WebDataContext": "Server=db;Database=context;User=sa"
+  },
+  "Kestrel": {
+    "EndPoints": {
+      "HttpsDefaultCert": {
+        "Url": "https://*:443"
+      },
+      "Http": {
+        "Url": "http://*:80"
+      }
+    },
+    "Certificates": {
+      "Default": {
+        "Path": "certificate-path.pfx",
+        "Password": "certificate-password"
+      }
+    }
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "UpdateInterval": 4,
+  "AdminConfig": {
+    "AdminList": [ "user" ]
+  },
+  "smtp": {
+    "sender": "team.email.example@mail.com",
+    "host": "smtp.mail.com",
+    "port": 25,
+    "ssl": false,
+    "username": "",
+    "password": ""
+  },
+  "ldap": {
+    "url": "domain.company.com",
+    "port": 3269,
+    "ssl":  true,
+    "bindDn": "CN=Users,DC=company,DC=com",
+    "username": "DOMAIN\\faceless_account_name",
+    "password": "faceless_account_password",
+    "searchBase": "DC=company,DC=com",
+    "searchFilter": "(sAMAccountName={0})"
+  },
+  "cookies": {
+    "cookieName": "WebArchiveCookies",
+    "loginPath": "/account/login",
+    "logoutPath": "/account/logout",
+    "accessDeniedPath": "/account/accessDenied",
+    "returnUrlParameter": "u"
+  }
+}
+
